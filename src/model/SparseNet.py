@@ -23,8 +23,8 @@ class SparseNet(nn.Module):
         # create R
         D = img_batch.shape[2] 
         assert (D - self.K) % self.S == 0, "Kernel and stride size mismatch"
-        c = (D - self.K) 
-        self.R = torch.zeros((img_batch.shape[0], self.N), requires_grad=True, device=self.device)
+        c = (D - self.K) // self.S + 1
+        self.R = torch.zeros((img_batch.shape[0], self.N, c, c), requires_grad=True, device=self.device)
         converged = False
         # update R
         optim = torch.optim.SGD([{'params': self.R, "lr": self.R_lr}])
@@ -57,7 +57,10 @@ class SparseNet(nn.Module):
 
     def normalize_weights(self):
         with torch.no_grad():
-            self.U.weight.data = self.U.weight / self.U.weight.sum(dim=0)
+            ch = self.U.weight.size(0)
+            old_shape = self.U.weight.shape
+            temp = F.normalize(self.U.weight.data.reshape(ch, -1), dim=1)
+            self.U.weight.data = temp.data.reshape(old_shape) 
 
     def forward(self, img_batch):
         # first fit
