@@ -1,7 +1,4 @@
 # Convolutional Sparse Coding
-
-![](./trained_models/RF.png)
-
 This is an implementation of convolutional sparse coding paper in PyTorch. Iterative Shrinkage/Thresholding Algorithm 
 (ISTA) is used to fit neuronal responses for the input. Gradients for receptive fields are calculated through PyTorch's autograd
 feature. 
