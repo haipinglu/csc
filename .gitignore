@@ -10,4 +10,3 @@ __pycache__/
 *.vscode
 
 *runs
-*trained_models
