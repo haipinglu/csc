@@ -8,3 +8,6 @@ __pycache__/
 *.mat
 
 *.vscode
+
+*runs
+*trained_models
